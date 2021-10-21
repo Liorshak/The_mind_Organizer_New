@@ -32,12 +32,12 @@ function createBubble(event) {
   }
 
   let newBubble = document.createElement("div");
-  //create txt node
   let newTxt = document.createTextNode(inputItem.value);
   newBubble.appendChild(newTxt);
-
-  //create id for div
   newBubble.setAttribute("id", bubblesList.length);
+  newBubble.addEventListener("dragstart", startDrag);
+  newBubble.addEventListener("dragend",endDrag);
+
 
   // create new object
   newObj = new Bubble(
@@ -48,6 +48,8 @@ function createBubble(event) {
     "action",
     1
   );
+
+  bubblesList.push(newObj); 
 
   //create del btn
   let delBtn = document.createElement("button");
@@ -63,9 +65,9 @@ function createBubble(event) {
 
   // make draggable true attribute
   newBubble.setAttribute("draggable", "true");
-
-  randomX = Math.floor(Math.random * 400);
-  randomY = Math.floor(Math.random * 700);
+  newBubble.style.position = "absolute"
+  //randomX = Math.floor(Math.random * 400);
+  //randomY = Math.floor(Math.random * 700);
 
   //make style position x random
   // make style position y random
@@ -86,8 +88,21 @@ function createBubble(event) {
 
   dragArea.appendChild(newBubble);
   // to do list append child new bubble
-  newBubble.style.top = randomY + "px";
-  newBubble.style.left = randomX + "px";
+  //newBubble.style.top = randomY + "px";
+  //newBubble.style.left = randomX + "px";
+}
+
+function startDrag (event) {
+  //event.preventDefault();
+  //event.target.style.backgroundColor = "lightpink";
+}
+
+function endDrag (event) {
+  let _x = event.clientX;
+  let _y = event.clientY;
+  event.target.style.left = _x + "px";
+  event.target.style.top = _y + "px";
+  event.target.style.position = "absolute";
 }
 
 function isEmpty(str) {
