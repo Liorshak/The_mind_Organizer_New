@@ -15,6 +15,8 @@ let bubblesList = [];
 let brainForm = document.getElementById("brainForm");
 let inputItem = document.getElementById("inputItem");
 let dragArea = document.getElementById("dragArea");
+let toDos = document.getElementById("toDos");
+let toProcess = document.getElementById("toProcess");
 
 //initial listeners
 brainForm.addEventListener("submit", createBubble);
@@ -36,8 +38,7 @@ function createBubble(event) {
   newBubble.appendChild(newTxt);
   newBubble.setAttribute("id", bubblesList.length);
   newBubble.addEventListener("dragstart", startDrag);
-  newBubble.addEventListener("dragend",endDrag);
-
+  newBubble.addEventListener("dragend", endDrag);
 
   // create new object
   newObj = new Bubble(
@@ -49,35 +50,38 @@ function createBubble(event) {
     1
   );
 
-  bubblesList.push(newObj); 
+  bubblesList.push(newObj);
 
   //create del btn
   let delBtn = document.createElement("button");
   let delBtnTxt = document.createTextNode("x");
   delBtn.appendChild(delBtnTxt);
+  delBtn.classList.add("delBtn");
 
   //need to make an input to get item priority
 
   //create check button
   let newCheck = document.createElement("input"); // creating input
   newCheck.setAttribute("type", "checkbox");
+  newCheck.classList.add("checkInput");
   //create radio button
 
   // make draggable true attribute
   newBubble.setAttribute("draggable", "true");
-  newBubble.style.position = "absolute"
+  newBubble.style.position = "absolute";
   //randomX = Math.floor(Math.random * 400);
   //randomY = Math.floor(Math.random * 700);
 
   //make style position x random
   // make style position y random
 
-  /// here event lisiner del btn
-  /// here event lisiner check box btn
-  /// here event lisiner radio btn
-  /// here event lisiner dragstart div (newBubble)
-  /// here event listiner dragEnd div ( newBubble)
-  /// here event listiner item priority
+  /// here event listener del btn
+  delBtn.addEventListener("click", removeBubble);
+  /// here event listener check box btn
+  newCheck.addEventListener("change", completeTask);
+  /// here event listener radio btn
+
+  /// here event listener item priority
 
   newBubble.appendChild(delBtn);
   newBubble.appendChild(newCheck);
@@ -86,18 +90,24 @@ function createBubble(event) {
   /// newBubble.appendChild (priority)
   //newBubble.appendChild (radio)
 
+  newBubble.classList.add("thought");
+
   dragArea.appendChild(newBubble);
+
+  //recreate the element  for the to do list
+
   // to do list append child new bubble
   //newBubble.style.top = randomY + "px";
   //newBubble.style.left = randomX + "px";
+  inputItem.value = "";
 }
 
-function startDrag (event) {
+function startDrag(event) {
   //event.preventDefault();
   //event.target.style.backgroundColor = "lightpink";
 }
 
-function endDrag (event) {
+function endDrag(event) {
   let _x = event.clientX;
   let _y = event.clientY;
   event.target.style.left = _x + "px";
@@ -110,6 +120,24 @@ function isEmpty(str) {
     return true;
   } else {
     return false;
+  }
+}
+
+function removeBubble(event) {
+  let idDiv = event.target.parentNode.id;
+  let index = bubblesList.findIndex((p) => p.id == idDiv);
+  bubblesList[index]["hidden"] = true;
+  event.target.parentNode.remove(); /// we need to think if we want to hide or remove the div and just collect the data
+}
+
+function completeTask(event) {
+  let idDiv = event.target.parentNode.id;
+  let index = bubblesList.findIndex((p) => p.id == idDiv);
+  bubblesList[index]["done"] = event.target.checked;
+  if (bubblesList[index]["done"]) {
+    event.target.parentNode.classList.add("finished");
+  } else {
+    event.target.parentNode.classList.remove("finished");
   }
 }
 
