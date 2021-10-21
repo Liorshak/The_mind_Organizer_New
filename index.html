@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mind Organizer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300&family=Poppins:wght@300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+<body>
+    <section class="main" id="main">
+
+        <!-- part 1: form plus button id="brainForm"-->
+            <!-- input with text/value id="inputItem" -->
+            <!-- button to create bubble id="addBtn"-->
+<!-- page 1 -->
+       
+        <h1 id="headTitle">The Mind Organizer</h1>
+
+       <form id="brainForm">
+        <input type="text" id="inputItem" placeholder="whats on your mind?">
+        <input type="submit" id="addBtn" value="Add">
+       </form>
+     
+        <!-- part 2: dragable area id="dragArea"-->
+
+            <!-- bubbles in random created by button above id="[index - listBubble.length]-->
+
+       <section id="dragArea">
+       <!-- part 2: draggable area id="dragArea"-->
+            <!-- bubbles in random created by button above id="[index - listBubble.length]-->
+            
+            <a href="#organizer" id="arrowPageDown"><i class="fas fa-angle-double-down"></i></a>
+           
+       </section>
+<!-- end of page 1 -->
+<!-- page 2 -->
+       <section id="organizer">
+            <a href="#main" id="arrowPageUp"><i class="fas fa-angle-double-up"></i></a>
+            <!-- part 3: two collumns id="organizer"-->
+            <!-- part 3a: list (flex/grid) of TO-DO id="toDos"-->
+            <!-- part 3b: list (flex/grid) of TO-PROCESS id="toProcess" -->
+
+
+            <div id="toDos"></div>   
+            
+            <div id="toProcess"></div>
+
+       </section>
+<!-- end of page 2 -->
+    </section>
+    <script src="js/main.js"></script>
+</body>
+</html>
