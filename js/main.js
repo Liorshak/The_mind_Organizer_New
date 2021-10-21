@@ -11,15 +11,13 @@ let Bubble = class {
 };
 let bubblesList = [];
 
-
-// collect elements 
+// collect elements
 let brainForm = document.getElementById("brainForm");
 let inputItem = document.getElementById("inputItem");
 let dragArea = document.getElementById("dragArea");
 
 //initial listeners
 brainForm.addEventListener("submit", createBubble);
-
 
 // let ... document.get..
 // part 2
@@ -29,21 +27,76 @@ function createBubble(event) {
   event.preventDefault();
 
   //validates it's not empty
-  if (isEmpty(inputItem.value)) {return} 
+  if (isEmpty(inputItem.value)) {
+    return;
+  }
 
   let newBubble = document.createElement("div");
-  newBubble.textContent = inputItem.value
+  //create txt node
+  let newTxt = document.createTextNode(inputItem.value);
+  newBubble.appendChild(newTxt);
+
+  //create id for div
+  newBubble.setAttribute("id", bubblesList.length);
+
+  // create new object
+  newObj = new Bubble(
+    bubblesList.length,
+    inputItem.value,
+    false,
+    false,
+    "action",
+    1
+  );
+
+  //create del btn
+  let delBtn = document.createElement("button");
+  let delBtnTxt = document.createTextNode("x");
+  delBtn.appendChild(delBtnTxt);
+
+  //need to make an input to get item priority
+
+  //create check button
+  let newCheck = document.createElement("input"); // creating input
+  newCheck.setAttribute("type", "checkbox");
+  //create radio button
+
+  // make draggable true attribute
+  newBubble.setAttribute("draggable", "true");
+
+  randomX = Math.floor(Math.random * 400);
+  randomY = Math.floor(Math.random * 700);
+
+  //make style position x random
+  // make style position y random
+
+  /// here event lisiner del btn
+  /// here event lisiner check box btn
+  /// here event lisiner radio btn
+  /// here event lisiner dragstart div (newBubble)
+  /// here event listiner dragEnd div ( newBubble)
+  /// here event listiner item priority
+
+  newBubble.appendChild(delBtn);
+  newBubble.appendChild(newCheck);
+  newBubble.appendChild(newTxt);
+
+  /// newBubble.appendChild (priority)
+  //newBubble.appendChild (radio)
+
   dragArea.appendChild(newBubble);
-
-
+  // to do list append child new bubble
+  newBubble.style.top = randomY + "px";
+  newBubble.style.left = randomX + "px";
 }
 
 function isEmpty(str) {
-  if (str === "") {return true}
-  else {return false}
+  if (str === "") {
+    return true;
+  } else {
+    return false;
+  }
 }
-
-
 
 // part 3 - functions createBubble() -> creates a draggable div bubble
 // sanity validations (text not empty for instance)-> checkBubble
