@@ -11,6 +11,10 @@ let Bubble = class {
 };
 // general stuff
 // collect elements
+
+let bubblesList = []; 
+
+
 // let ... document.get..
 // part 2
 // add respective listners to initial elements
