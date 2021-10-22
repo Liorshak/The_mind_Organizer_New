@@ -35,6 +35,7 @@ function createBubble(event) {
 
   let newBubble = document.createElement("div");
   let newTxt = document.createTextNode(inputItem.value);
+  // newTxt.classList.add("txtInBubble");
   newBubble.appendChild(newTxt);
   newBubble.setAttribute("id", bubblesList.length);
   newBubble.addEventListener("dragstart", startDrag);
@@ -74,7 +75,7 @@ function createBubble(event) {
 
   let radio1 = document.createElement("input");
   radio1.setAttribute("type", "radio");
-  radio1.setAttribute("name", "kind"+newObj.id);
+  radio1.setAttribute("name", "kind" + newObj.id);
   radio1.setAttribute("id", newObj.id + "radioD");
   let labelForRadio1 = document.createElement("label");
   labelForRadio1.setAttribute("for", newObj.id + "radio");
@@ -189,54 +190,48 @@ function findBubble(idToFind) {
   return false;
 }
 
-function addToList(id,divList) {
+function addToList(id, divList) {
   let obj = findBubble(id);
   let divEleToAdd = document.getElementById(divList);
   let divContainer = document.createElement("div");
-  divContainer.setAttribute("objId",id);
+  divContainer.setAttribute("objId", id);
   let txtNode = document.createTextNode(obj.text);
   divContainer.appendChild(txtNode);
   divEleToAdd.appendChild(divContainer);
-  
 }
 
 function bubbleToDo(event) {
   let radioId = event.target.getAttribute("id");
   let objId = event.target.getAttribute("id").slice(0, radioId.length - 6);
   let bubble = findBubble(parseInt(objId));
-  if (bubble.type!=0) {removeFromList("toProcessList",objId)}
-  findBubble(parseInt(objId)).type=1;
-  addToList(objId,"toDosList"); //will add to ToDo list
+  if (bubble.type != 0) {
+    removeFromList("toProcessList", objId);
+  }
+  findBubble(parseInt(objId)).type = 1;
+  addToList(objId, "toDosList"); //will add to ToDo list
 }
 
 function bubbleToProcess(event) {
   let radioId = event.target.getAttribute("id");
   let objId = event.target.getAttribute("id").slice(0, radioId.length - 6);
   let bubble = findBubble(parseInt(objId));
-  if (bubble.type != 0) { removeFromList("toDosList", objId) }
-  findBubble(parseInt(objId)).type=2;
-  addToList(objId,"toProcessList"); //will add to ToDo list
+  if (bubble.type != 0) {
+    removeFromList("toDosList", objId);
+  }
+  findBubble(parseInt(objId)).type = 2;
+  addToList(objId, "toProcessList"); //will add to ToDo list
 }
 
-function removeFromList(listToDelete,objId) {
-  let holderDiv = document.querySelector("#"+listToDelete);
+function removeFromList(listToDelete, objId) {
+  let holderDiv = document.querySelector("#" + listToDelete);
   let divList = holderDiv.childNodes;
-  findDivById(divList,objId).remove();
+  findDivById(divList, objId).remove();
 }
 
 function findDivById(divCol, id) {
   for (let divEle of divCol) {
-    if (divEle.getAttribute("objID")==id) { return divEle}
+    if (divEle.getAttribute("objID") == id) {
+      return divEle;
+    }
   }
-
 }
-
-
-
-
-
-
-
-
-
-

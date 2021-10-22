@@ -122,7 +122,10 @@ color:white;
     border:0px;
     background:rgba(177,46,108,1);
     color:white;
+    font-size:0.5em;
     font-weight:bold;
+   
+  
 }
 
 .thought {
@@ -133,9 +136,9 @@ color:white;
     background-color:#fff;
     padding:20px;
     border-radius:30px;
-    min-width:60px;
+    min-width:70px;
     max-width:220px;
-    min-height:40px;
+    min-height:60px;
     margin:20px;
     position:relative;
     align-items:center;
@@ -177,6 +180,10 @@ color:white;
 }
 
 
+.txtInBubble{
+    z-index: 9999;
+
+}
 
 .radios{
     font-size:0.5em;
