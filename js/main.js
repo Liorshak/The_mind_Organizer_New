@@ -63,39 +63,6 @@ function createBubble(event) {
   // ************** Radio Button
   // <input type="radio" id="html" name="fav_language" value="HTML">
   //   <label for="html">HTML</label><br>
-  let divRadios = document.createElement("div");
-  let divRadio1 = document.createElement("div");
-  let divRadio2 = document.createElement("div");
-
-  let radio1 = document.createElement("input");
-  radio1.setAttribute("type", "radio");
-  radio1.setAttribute("name", "kind" + newObj.id);
-  radio1.setAttribute("id", newObj.id + "radioD");
-  let labelForRadio1 = document.createElement("label");
-  labelForRadio1.setAttribute("for", newObj.id + "radio");
-  let txtForLabelRadio1 = document.createTextNode("D");
-  labelForRadio1.appendChild(txtForLabelRadio1);
-  radio1.addEventListener("change", bubbleToDo);
-
-  divRadio1.appendChild(radio1);
-  divRadio1.appendChild(labelForRadio1);
-
-  let radio2 = document.createElement("input");
-  radio2.setAttribute("type", "radio");
-  radio2.setAttribute("name", "kind" + newObj.id);
-  radio2.setAttribute("id", newObj.id + "radioT");
-  let labelForRadio2 = document.createElement("label");
-  labelForRadio2.setAttribute("for", newObj.id + "radioT");
-  let txtForLabelRadio2 = document.createTextNode("T");
-  labelForRadio2.appendChild(txtForLabelRadio2);
-  radio2.addEventListener("change", bubbleToProcess);
-
-  divRadio2.appendChild(radio2);
-  divRadio2.appendChild(labelForRadio2);
-
-  divRadios.appendChild(divRadio1);
-  divRadios.appendChild(divRadio2);
-  divRadios.classList.add("radios");
 
   //create radio button
 
@@ -118,8 +85,8 @@ function createBubble(event) {
   addCheckBtn(newBubble, "checkInput");
 
   newBubble.appendChild(newTxt);
-  newBubble.appendChild(divRadios);
 
+  addRadio(newBubble, "radios", newObj.id);
   /// newBubble.appendChild (priority)
   //newBubble.appendChild (radio)
 
@@ -136,6 +103,44 @@ function createBubble(event) {
   // to do list append child new bubble
 
   inputItem.value = "";
+}
+
+function addRadio(location, styleType, id) {
+  let divRadios = document.createElement("div");
+  let divRadio1 = document.createElement("div");
+  let divRadio2 = document.createElement("div");
+
+  let radio1 = document.createElement("input");
+  radio1.setAttribute("type", "radio");
+  radio1.setAttribute("name", "kind" + id);
+  radio1.setAttribute("id", id + "radioD");
+  let labelForRadio1 = document.createElement("label");
+  labelForRadio1.setAttribute("for", id + "radio");
+  let txtForLabelRadio1 = document.createTextNode("D");
+  labelForRadio1.appendChild(txtForLabelRadio1);
+  radio1.addEventListener("change", bubbleToDo);
+
+  divRadio1.appendChild(radio1);
+  divRadio1.appendChild(labelForRadio1);
+
+  let radio2 = document.createElement("input");
+  radio2.setAttribute("type", "radio");
+  radio2.setAttribute("name", "kind" + id);
+  radio2.setAttribute("id", id + "radioT");
+  let labelForRadio2 = document.createElement("label");
+  labelForRadio2.setAttribute("for", id + "radioT");
+  let txtForLabelRadio2 = document.createTextNode("T");
+  labelForRadio2.appendChild(txtForLabelRadio2);
+  radio2.addEventListener("change", bubbleToProcess);
+
+  divRadio2.appendChild(radio2);
+  divRadio2.appendChild(labelForRadio2);
+
+  divRadios.appendChild(divRadio1);
+  divRadios.appendChild(divRadio2);
+  divRadios.classList.add(styleType);
+
+  location.appendChild(divRadios);
 }
 
 function addDelBtn(location, styleType) {
@@ -236,6 +241,7 @@ function addToList(id, divList) {
   addDelBtn(divContainer, "delBtnList");
   addCheckBtn(divContainer, "checkInputList");
   divContainer.appendChild(txtNode);
+  addRadio(divContainer, "radiosInList", id);
   divEleToAdd.appendChild(divContainer);
 }
 

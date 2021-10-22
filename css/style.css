@@ -184,7 +184,7 @@ color:white;
 
 .delBtnList{
     position:relative;
-    top:-3px;
+   
     border-radius: 5px;
     border:0px;
     background:rgba(177,46,108,1);
@@ -212,6 +212,8 @@ color:white;
     font-weight: bold;
     margin-left: 10px;
     margin-right:10px;
+    display:flex;
+    align-items:center;
 }
 
 
@@ -261,6 +263,14 @@ color:white;
     display: flex;
 }
 
+
+.radiosInList{
+    position:static;
+    display:flex;
+    margin-left:auto;
+    font-size:0.7em;
+    flex-direction: column;
+}
 
 
 #navBar{
