@@ -8,6 +8,7 @@ font-family: 'Nunito', sans-serif;
 color:white;
 }
 
+
 /* main display flex container collumn 100 VW x 150 VH */
 
 #main{
@@ -59,6 +60,21 @@ color:white;
     font-weight:bold;
 
 }
+.paraImage {
+    /* The image used */
+    
+    background-image: url("https://images.unsplash.com/photo-1617791160536-598cf32026fb?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1528&q=80");
+  
+    /* Set a specific height */
+    min-height: 800px;
+  
+    /* Create the parallax scrolling effect */
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+   
+  }
 
 #dragArea {
     margin-top: 20px;
@@ -171,6 +187,22 @@ color:white;
 }
 
 
+
+#navBar{
+    background:rgb(212, 184, 55) !important;
+    text-decoration: none !important;
+    color:white !important;
+    height: 9vh;
+    max-height: 70px;
+}
+
+#navBar img{
+width: 40px; 
+height: 40px;
+margin-left: 5px;
+
+}
+
 #TaskOrganizer{
     display:flex;
     justify-content:space-between;
@@ -205,6 +237,7 @@ color:white;
 
     #main{
         height:250vh;
+       
     }
 
 #TaskOrganizer{
