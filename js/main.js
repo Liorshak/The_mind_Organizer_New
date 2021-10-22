@@ -10,6 +10,9 @@ let Bubble = class {
   }
 };
 let bubblesList = [];
+// will control the gragging . Must be global.
+let isDown=false; 
+let offset=[0,0];
 
 // collect elements
 let brainForm = document.getElementById("brainForm");
@@ -38,8 +41,11 @@ function createBubble(event) {
   // newTxt.classList.add("txtInBubble");
   newBubble.appendChild(newTxt);
   newBubble.setAttribute("id", bubblesList.length);
-  newBubble.addEventListener("dragstart", startDrag);
-  newBubble.addEventListener("dragend", endDrag);
+  //*********************** IMPROVING DRAGGING */
+  // newBubble.addEventListener("dragstart", startDrag);
+  // newBubble.addEventListener("dragend", endDrag);
+  newBubble.style.position = "absolute";
+
 
   // create new object
   newObj = new Bubble(
@@ -106,8 +112,8 @@ function createBubble(event) {
   //create radio button
 
   // make draggable true attribute
-  newBubble.setAttribute("draggable", "true");
-  newBubble.style.position = "absolute";
+  // newBubble.setAttribute("draggable", "true");
+  // newBubble.style.position = "absolute";
   //randomX = Math.floor(Math.random * 400);
   //randomY = Math.floor(Math.random * 700);
 
@@ -131,6 +137,10 @@ function createBubble(event) {
   //newBubble.appendChild (radio)
 
   newBubble.classList.add("thought");
+
+  newBubble.addEventListener("mousedown", bubbleMouseDown);
+  document.body.addEventListener("mouseup", bubbleMouseUp);
+  newBubble.addEventListener("mousemove", bubbleMouseMove);
 
   dragArea.appendChild(newBubble);
 
@@ -234,4 +244,33 @@ function findDivById(divCol, id) {
       return divEle;
     }
   }
+}
+
+function bubbleMouseDown(event) {
+  isDown = true;
+  ele = event.target;
+  offset = [
+    ele.offsetLeft - event.clientX,
+    ele.offsetTop - event.clientY
+  ];
+
+}
+
+function bubbleMouseUp(event) {
+  isDown = false;
+}
+
+function bubbleMouseMove(event) {
+  let ele = event.target;
+  event.preventDefault();
+  if (isDown) {
+    let mousePosition = {
+      x: event.clientX,
+      y: event.clientY
+    };
+    ele.style.left = (mousePosition.x + offset[0]) + 'px';
+    ele.style.top = (mousePosition.y + offset[1]) + 'px';
+
+  }
+
 }

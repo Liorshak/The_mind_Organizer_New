@@ -8,6 +8,15 @@ font-family: 'Nunito', sans-serif;
 color:white;
 }
 
+#toProcessList > div {
+    border-bottom: white solid 1px;
+    padding: 5px;
+}
+
+#toDosList > div {
+    border-bottom: white solid 1px;
+    padding: 5px;
+}
 
 /* main display flex container collumn 100 VW x 150 VH */
 
