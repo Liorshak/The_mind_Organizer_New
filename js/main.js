@@ -136,12 +136,12 @@ function createBubble(event) {
   /// newBubble.appendChild (priority)
   //newBubble.appendChild (radio)
 
-  newBubble.classList.add("thought");
-
   newBubble.addEventListener("mousedown", bubbleMouseDown);
-  document.body.addEventListener("mouseup", bubbleMouseUp);
+  document.addEventListener("mouseup", bubbleMouseUp);
   newBubble.addEventListener("mousemove", bubbleMouseMove);
 
+
+  newBubble.classList.add("thought");
   dragArea.appendChild(newBubble);
 
   //recreate the element  for the to do list
@@ -150,6 +150,11 @@ function createBubble(event) {
   //newBubble.style.top = randomY + "px";
   //newBubble.style.left = randomX + "px";
   inputItem.value = "";
+
+
+
+
+  
 }
 
 function startDrag(event) {
@@ -249,6 +254,9 @@ function findDivById(divCol, id) {
 function bubbleMouseDown(event) {
   isDown = true;
   ele = event.target;
+  if (!ele.classList.contains("thought")){
+    ele = event.target.closest(".thought")
+  }
   offset = [
     ele.offsetLeft - event.clientX,
     ele.offsetTop - event.clientY
@@ -263,6 +271,9 @@ function bubbleMouseUp(event) {
 function bubbleMouseMove(event) {
   let ele = event.target;
   event.preventDefault();
+  if (!ele.classList.contains("thought")) {
+    ele = event.target.closest(".thought")
+  }
   if (isDown) {
     let mousePosition = {
       x: event.clientX,
