@@ -11,7 +11,6 @@ let Bubble = class {
 };
 let bubblesList = [];
 
-
 // collect elements
 let brainForm = document.getElementById("brainForm");
 let inputItem = document.getElementById("inputItem");
@@ -51,9 +50,7 @@ function createBubble(event) {
     1
   );
 
-
   bubblesList.push(newObj);
- 
 
   //create del btn
   let delBtn = document.createElement("button");
@@ -68,20 +65,42 @@ function createBubble(event) {
   newCheck.setAttribute("type", "checkbox");
   newCheck.classList.add("checkInput");
 
-
-// ************** Radio Button 
+  // ************** Radio Button
   // <input type="radio" id="html" name="fav_language" value="HTML">
   //   <label for="html">HTML</label><br>
-  let radio = document.createElement("input");
-  radio.setAttribute("type","radio");
-  radio.setAttribute("id",newObj.id+"radio");
-  let labelForRadio = document.createElement("label");
-  labelForRadio.setAttribute("for",newObj.id+"radio");
-  let txtForLabelRadio = document.createTextNode("To Do");
-  labelForRadio.appendChild(txtForLabelRadio);
-  radio.addEventListener("change",bubbleToDo)
+  let divRadios = document.createElement("div");
+  let divRadio1 = document.createElement("div");
+  let divRadio2 = document.createElement("div");
 
+  let radio1 = document.createElement("input");
+  radio1.setAttribute("type", "radio");
+  radio1.setAttribute("name", "kind");
+  radio1.setAttribute("id", newObj.id + "radioD");
+  let labelForRadio1 = document.createElement("label");
+  labelForRadio1.setAttribute("for", newObj.id + "radio");
+  let txtForLabelRadio1 = document.createTextNode("D");
+  labelForRadio1.appendChild(txtForLabelRadio1);
+  radio1.addEventListener("change", bubbleToDo);
 
+  divRadio1.appendChild(radio1);
+  divRadio1.appendChild(labelForRadio1);
+
+  let radio2 = document.createElement("input");
+  radio2.setAttribute("type", "radio");
+  radio2.setAttribute("name", "kind");
+  radio2.setAttribute("id", newObj.id + "radioT");
+  let labelForRadio2 = document.createElement("label");
+  labelForRadio2.setAttribute("for", newObj.id + "radioT");
+  let txtForLabelRadio2 = document.createTextNode("T");
+  labelForRadio2.appendChild(txtForLabelRadio2);
+  radio2.addEventListener("change", bubbleToDo);
+
+  divRadio2.appendChild(radio2);
+  divRadio2.appendChild(labelForRadio2);
+
+  divRadios.appendChild(divRadio1);
+  divRadios.appendChild(divRadio2);
+  divRadios.classList.add("radios");
 
   //create radio button
 
@@ -105,8 +124,7 @@ function createBubble(event) {
   newBubble.appendChild(delBtn);
   newBubble.appendChild(newCheck);
   newBubble.appendChild(newTxt);
-  newBubble.appendChild(radio);
-  newBubble.appendChild(labelForRadio);
+  newBubble.appendChild(divRadios);
 
   /// newBubble.appendChild (priority)
   //newBubble.appendChild (radio)
@@ -165,9 +183,9 @@ function completeTask(event) {
 function findBubble(idToFind) {
   for (let bubble of bubblesList) {
     if (bubble.id == idToFind) {
-      return bubble
+      return bubble;
     }
-  }     
+  }
   return false;
 }
 
@@ -175,16 +193,15 @@ function addToToDo(id) {
   let obj = findBubble(id);
   console.log(obj);
   let divEleToAdd = document.getElementById("toDosList");
-  let divContainer = document.createElement("div")
+  let divContainer = document.createElement("div");
   let txtNode = document.createTextNode(obj.text);
   divContainer.appendChild(txtNode);
   divEleToAdd.appendChild(divContainer);
-  obj.type=0;
-  
+  obj.type = 0;
 }
 
 function bubbleToDo(event) {
   let radioId = event.target.getAttribute("id");
-  let objId = event.target.getAttribute("id").slice(0,radioId.length-5);
+  let objId = event.target.getAttribute("id").slice(0, radioId.length - 6);
   addToToDo(objId);
 }
