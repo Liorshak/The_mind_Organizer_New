@@ -119,7 +119,7 @@ color:white;
 
 .checkInput{
     position:absolute;
-    left:-2px;
+    left:2px;
     top:40%;
 }
 
@@ -182,8 +182,40 @@ color:white;
     
   }
 
+.delBtnList{
+    position:relative;
+    top:-3px;
+    border-radius: 5px;
+    border:0px;
+    background:rgba(177,46,108,1);
+    color:white;
+    font-size:0.5em;
+    font-weight:bold;
+    margin :2px;
+    
+}
 
-  .finished{
+
+.checkInputList{
+    position:relative;
+    margin :2px;
+    
+}
+
+
+#toProcessList>div ,#toDosList>div {
+    background: white;
+    border-radius: 5px;
+    padding:5px;
+    color:rgb(35,121,129);
+    font-size:1.3em;
+    font-weight: bold;
+    margin-left: 10px;
+    margin-right:10px;
+}
+
+
+  .finished ,#toProcessList>div.finished ,#toDosList>div.finished{
     text-decoration:line-through;
     color:rgba(177,46,108,1);
 }
@@ -191,12 +223,12 @@ color:white;
 
 #footer {
     background:rgb(212, 184, 55);
-    height: 8vh;
-    max-height: 40px;
+    height: 40px;
+    
     display:flex;
     justify-content:space-around;
-    font-size:20px;
-    
+    font-size:18px;
+    text-transform:capitalize;
     text-align:center;
     
     
@@ -309,7 +341,7 @@ margin-left: 5px;
     
         flex-direction: column;
         font-size:15px;
-        max-height: 75px;
+        height: 75px;
        
     
     }

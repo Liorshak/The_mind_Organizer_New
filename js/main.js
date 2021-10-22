@@ -58,18 +58,7 @@ function createBubble(event) {
 
   bubblesList.push(newObj);
 
-  //create del btn
-  let delBtn = document.createElement("button");
-  let delBtnTxt = document.createTextNode("x");
-  delBtn.appendChild(delBtnTxt);
-  delBtn.classList.add("delBtn");
-
   //need to make an input to get item priority
-
-  //create check button
-  let newCheck = document.createElement("input"); // creating input
-  newCheck.setAttribute("type", "checkbox");
-  newCheck.classList.add("checkInput");
 
   // ************** Radio Button
   // <input type="radio" id="html" name="fav_language" value="HTML">
@@ -113,22 +102,21 @@ function createBubble(event) {
   // make draggable true attribute
   // newBubble.setAttribute("draggable", "true");
   // newBubble.style.position = "absolute";
-  //randomX = Math.floor(Math.random * 400);
-  //randomY = Math.floor(Math.random * 700);
+  // randomX = Math.floor(Math.random * 400);
+  // randomY = Math.floor(Math.random * 700);
 
   //make style position x random
   // make style position y random
+  // newBubble.style.top = randomY + "px";
+  // newBubble.style.left = randomX + "px";
 
-  /// here event listener del btn
-  delBtn.addEventListener("click", removeBubble);
-  /// here event listener check box btn
-  newCheck.addEventListener("change", completeTask);
   /// here event listener radio btn
 
   /// here event listener item priority
 
-  newBubble.appendChild(delBtn);
-  newBubble.appendChild(newCheck);
+  addDelBtn(newBubble, "delBtn");
+  addCheckBtn(newBubble, "checkInput");
+
   newBubble.appendChild(newTxt);
   newBubble.appendChild(divRadios);
 
@@ -140,14 +128,34 @@ function createBubble(event) {
   newBubble.addEventListener("mousemove", bubbleMouseMove);
 
   newBubble.classList.add("thought");
+
   dragArea.appendChild(newBubble);
 
   //recreate the element  for the to do list
 
   // to do list append child new bubble
-  //newBubble.style.top = randomY + "px";
-  //newBubble.style.left = randomX + "px";
+
   inputItem.value = "";
+}
+
+function addDelBtn(location, styleType) {
+  //create del btn
+  let delBtn = document.createElement("button");
+  let delBtnTxt = document.createTextNode("x");
+  delBtn.appendChild(delBtnTxt);
+  delBtn.classList.add(styleType);
+
+  delBtn.addEventListener("click", removeBubble);
+  location.appendChild(delBtn);
+}
+
+function addCheckBtn(location, styleType) {
+  //create check button
+  let newCheck = document.createElement("input"); // creating input
+  newCheck.setAttribute("type", "checkbox");
+  newCheck.classList.add(styleType);
+  newCheck.addEventListener("change", completeTask);
+  location.appendChild(newCheck);
 }
 
 function startDrag(event) {
@@ -172,21 +180,42 @@ function isEmpty(str) {
 }
 
 function removeBubble(event) {
-  let idDiv = event.target.parentNode.id;
+  let idDiv = event.target.parentNode.getAttribute("id");
+
+  if (idDiv === null) {
+    idDiv = event.target.parentNode.getAttribute("data-objid");
+  }
+
   let index = bubblesList.findIndex((p) => p.id == idDiv);
   bubblesList[index]["hidden"] = true;
-  event.target.parentNode.remove(); /// we need to think if we want to hide or remove the div and just collect the data
+  let bubbleInDrag = document.getElementById(`${index}`);
+  let bubbleInList = document.querySelector(`[data-objid="${index}"]`);
+  bubbleInDrag.remove();
+  bubbleInList.remove();
+  //removing also from process and list
 }
 
 function completeTask(event) {
-  let idDiv = event.target.parentNode.id;
+  let idDiv = event.target.parentNode.getAttribute("id");
+
+  if (idDiv === null) {
+    idDiv = event.target.parentNode.getAttribute("data-objid");
+  }
   let index = bubblesList.findIndex((p) => p.id == idDiv);
   bubblesList[index]["done"] = event.target.checked;
+  let bubbleInDrag = document.getElementById(`${index}`);
+  let bubbleInList = document.querySelector(`[data-objid="${index}"]`);
   if (bubblesList[index]["done"]) {
-    event.target.parentNode.classList.add("finished");
+    // event.target.parentNode.classList.add("finished");
+    //also in process and list
+    bubbleInDrag.classList.add("finished");
+    bubbleInList.classList.add("finished");
   } else {
-    event.target.parentNode.classList.remove("finished");
+    // event.target.parentNode.classList.remove("finished");
+    bubbleInDrag.classList.remove("finished");
+    bubbleInList.classList.remove("finished");
   }
+  //also in process and list
 }
 
 function findBubble(idToFind) {
@@ -202,8 +231,10 @@ function addToList(id, divList) {
   let obj = findBubble(id);
   let divEleToAdd = document.getElementById(divList);
   let divContainer = document.createElement("div");
-  divContainer.setAttribute("objId", id);
+  divContainer.setAttribute("data-objid", id);
   let txtNode = document.createTextNode(obj.text);
+  addDelBtn(divContainer, "delBtnList");
+  addCheckBtn(divContainer, "checkInputList");
   divContainer.appendChild(txtNode);
   divEleToAdd.appendChild(divContainer);
 }
@@ -238,7 +269,7 @@ function removeFromList(listToDelete, objId) {
 
 function findDivById(divCol, id) {
   for (let divEle of divCol) {
-    if (divEle.getAttribute("objID") == id) {
+    if (divEle.getAttribute("data-objID") == id) {
       return divEle;
     }
   }
