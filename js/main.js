@@ -5,11 +5,12 @@ let Bubble = class {
     this.text = text;
     this.done = done;
     this.hidden = hidden;
-    this.type = type;
+    this.type = type; // 0 = Bubble | 1 -ToDo | 2 - ToProcess | 3 - Deleted
     this.priority = priority;
   }
 };
 let bubblesList = [];
+
 
 // collect elements
 let brainForm = document.getElementById("brainForm");
@@ -50,7 +51,9 @@ function createBubble(event) {
     1
   );
 
+
   bubblesList.push(newObj);
+ 
 
   //create del btn
   let delBtn = document.createElement("button");
@@ -64,6 +67,22 @@ function createBubble(event) {
   let newCheck = document.createElement("input"); // creating input
   newCheck.setAttribute("type", "checkbox");
   newCheck.classList.add("checkInput");
+
+
+// ************** Radio Button 
+  // <input type="radio" id="html" name="fav_language" value="HTML">
+  //   <label for="html">HTML</label><br>
+  let radio = document.createElement("input");
+  radio.setAttribute("type","radio");
+  radio.setAttribute("id",newObj.id+"radio");
+  let labelForRadio = document.createElement("label");
+  labelForRadio.setAttribute("for",newObj.id+"radio");
+  let txtForLabelRadio = document.createTextNode("To Do");
+  labelForRadio.appendChild(txtForLabelRadio);
+  radio.addEventListener("change",bubbleToDo)
+
+
+
   //create radio button
 
   // make draggable true attribute
@@ -86,6 +105,8 @@ function createBubble(event) {
   newBubble.appendChild(delBtn);
   newBubble.appendChild(newCheck);
   newBubble.appendChild(newTxt);
+  newBubble.appendChild(radio);
+  newBubble.appendChild(labelForRadio);
 
   /// newBubble.appendChild (priority)
   //newBubble.appendChild (radio)
@@ -141,7 +162,29 @@ function completeTask(event) {
   }
 }
 
-// part 3 - functions createBubble() -> creates a draggable div bubble
-// sanity validations (text not empty for instance)-> checkBubble
-// div > input with text / radio button ->
-// delete (hidden=true) / done check box / priority input
+function findBubble(idToFind) {
+  for (let bubble of bubblesList) {
+    if (bubble.id == idToFind) {
+      return bubble
+    }
+  }     
+  return false;
+}
+
+function addToToDo(id) {
+  let obj = findBubble(id);
+  console.log(obj);
+  let divEleToAdd = document.getElementById("toDosList");
+  let divContainer = document.createElement("div")
+  let txtNode = document.createTextNode(obj.text);
+  divContainer.appendChild(txtNode);
+  divEleToAdd.appendChild(divContainer);
+  obj.type=0;
+  
+}
+
+function bubbleToDo(event) {
+  let radioId = event.target.getAttribute("id");
+  let objId = event.target.getAttribute("id").slice(0,radioId.length-5);
+  addToToDo(objId);
+}
