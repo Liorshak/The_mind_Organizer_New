@@ -11,8 +11,8 @@ let Bubble = class {
 };
 let bubblesList = [];
 // will control the gragging . Must be global.
-let isDown=false; 
-let offset=[0,0];
+let isDown = false;
+let offset = [0, 0];
 
 // collect elements
 let brainForm = document.getElementById("brainForm");
@@ -45,7 +45,6 @@ function createBubble(event) {
   // newBubble.addEventListener("dragstart", startDrag);
   // newBubble.addEventListener("dragend", endDrag);
   newBubble.style.position = "absolute";
-
 
   // create new object
   newObj = new Bubble(
@@ -140,7 +139,6 @@ function createBubble(event) {
   document.addEventListener("mouseup", bubbleMouseUp);
   newBubble.addEventListener("mousemove", bubbleMouseMove);
 
-
   newBubble.classList.add("thought");
   dragArea.appendChild(newBubble);
 
@@ -150,11 +148,6 @@ function createBubble(event) {
   //newBubble.style.top = randomY + "px";
   //newBubble.style.left = randomX + "px";
   inputItem.value = "";
-
-
-
-
-  
 }
 
 function startDrag(event) {
@@ -254,14 +247,10 @@ function findDivById(divCol, id) {
 function bubbleMouseDown(event) {
   isDown = true;
   ele = event.target;
-  if (!ele.classList.contains("thought")){
-    ele = event.target.closest(".thought")
+  if (!ele.classList.contains("thought")) {
+    ele = event.target.closest(".thought");
   }
-  offset = [
-    ele.offsetLeft - event.clientX,
-    ele.offsetTop - event.clientY
-  ];
-
+  offset = [ele.offsetLeft - event.clientX, ele.offsetTop - event.clientY];
 }
 
 function bubbleMouseUp(event) {
@@ -272,16 +261,14 @@ function bubbleMouseMove(event) {
   let ele = event.target;
   event.preventDefault();
   if (!ele.classList.contains("thought")) {
-    ele = event.target.closest(".thought")
+    ele = event.target.closest(".thought");
   }
   if (isDown) {
     let mousePosition = {
       x: event.clientX,
-      y: event.clientY
+      y: event.clientY,
     };
-    ele.style.left = (mousePosition.x + offset[0]) + 'px';
-    ele.style.top = (mousePosition.y + offset[1]) + 'px';
-
+    ele.style.left = mousePosition.x + offset[0] + "px";
+    ele.style.top = mousePosition.y + offset[1] + "px";
   }
-
 }
