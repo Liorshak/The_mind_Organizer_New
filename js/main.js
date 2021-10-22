@@ -46,7 +46,7 @@ function createBubble(event) {
     inputItem.value,
     false,
     false,
-    "action",
+    0, // // 0 = Bubble | 1 -ToDo | 2 - ToProcess | 3 - Deleted
     1
   );
 
@@ -74,7 +74,7 @@ function createBubble(event) {
 
   let radio1 = document.createElement("input");
   radio1.setAttribute("type", "radio");
-  radio1.setAttribute("name", "kind");
+  radio1.setAttribute("name", "kind"+newObj.id);
   radio1.setAttribute("id", newObj.id + "radioD");
   let labelForRadio1 = document.createElement("label");
   labelForRadio1.setAttribute("for", newObj.id + "radio");
@@ -87,13 +87,13 @@ function createBubble(event) {
 
   let radio2 = document.createElement("input");
   radio2.setAttribute("type", "radio");
-  radio2.setAttribute("name", "kind");
+  radio2.setAttribute("name", "kind" + newObj.id);
   radio2.setAttribute("id", newObj.id + "radioT");
   let labelForRadio2 = document.createElement("label");
   labelForRadio2.setAttribute("for", newObj.id + "radioT");
   let txtForLabelRadio2 = document.createTextNode("T");
   labelForRadio2.appendChild(txtForLabelRadio2);
-  radio2.addEventListener("change", bubbleToDo);
+  radio2.addEventListener("change", bubbleToProcess);
 
   divRadio2.appendChild(radio2);
   divRadio2.appendChild(labelForRadio2);
@@ -189,19 +189,54 @@ function findBubble(idToFind) {
   return false;
 }
 
-function addToToDo(id) {
+function addToList(id,divList) {
   let obj = findBubble(id);
-  console.log(obj);
-  let divEleToAdd = document.getElementById("toDosList");
+  let divEleToAdd = document.getElementById(divList);
   let divContainer = document.createElement("div");
+  divContainer.setAttribute("objId",id);
   let txtNode = document.createTextNode(obj.text);
   divContainer.appendChild(txtNode);
   divEleToAdd.appendChild(divContainer);
-  obj.type = 0;
+  
 }
 
 function bubbleToDo(event) {
   let radioId = event.target.getAttribute("id");
   let objId = event.target.getAttribute("id").slice(0, radioId.length - 6);
-  addToToDo(objId);
+  let bubble = findBubble(parseInt(objId));
+  if (bubble.type!=0) {removeFromList("toProcessList",objId)}
+  findBubble(parseInt(objId)).type=1;
+  addToList(objId,"toDosList"); //will add to ToDo list
 }
+
+function bubbleToProcess(event) {
+  let radioId = event.target.getAttribute("id");
+  let objId = event.target.getAttribute("id").slice(0, radioId.length - 6);
+  let bubble = findBubble(parseInt(objId));
+  if (bubble.type != 0) { removeFromList("toDosList", objId) }
+  findBubble(parseInt(objId)).type=2;
+  addToList(objId,"toProcessList"); //will add to ToDo list
+}
+
+function removeFromList(listToDelete,objId) {
+  let holderDiv = document.querySelector("#"+listToDelete);
+  let divList = holderDiv.childNodes;
+  findDivById(divList,objId).remove();
+}
+
+function findDivById(divCol, id) {
+  for (let divEle of divCol) {
+    if (divEle.getAttribute("objID")==id) { return divEle}
+  }
+
+}
+
+
+
+
+
+
+
+
+
+
