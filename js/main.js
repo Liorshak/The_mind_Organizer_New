@@ -31,6 +31,11 @@ let bubbleForConnect2 = null;
 
 const audio1 = new Audio("audio/startconnecting.wav");
 const audio2 = new Audio("audio/connected.wav");
+const audioSet = new Audio("audio/setsubject.wav");
+const audioDel = new Audio("audio/delBtn.wav");
+const audioFinish = new Audio("audio/finished.wav");
+const audioAdd = new Audio("audio/addbubble.wav");
+const audioRadio = new Audio("audio/radiochange.wav");
 
 let exportProcessBtn = document.getElementById("exportProcessBtn");
 let exportToDoBtn = document.getElementById("exportToDoBtn");
@@ -44,6 +49,7 @@ exportToDoBtn.addEventListener("click", clickExportToDo);
 let subjectFlag = false;
 function maintainSubject(event) {
   event.preventDefault();
+  audioAdd.play();
   if (!subjectFlag) {
     createSubject();
   } else {
@@ -66,6 +72,7 @@ function createSubject() {
 // createBubble
 function createBubble(event) {
   event.preventDefault();
+  audioDel.play();
 
   //validates it's not empty
   if (isEmpty(inputItem.value)) {
@@ -129,7 +136,7 @@ function createBubble(event) {
   newBubble.appendChild(newTxt);
 
   newBubble.appendChild(newArrowBtn);
-  addRadio(newBubble, "radios", newObj.id);
+  addRadio(newBubble, "radios", newObj.id, "kind");
   /// newBubble.appendChild (priority)
   //newBubble.appendChild (radio)
 
@@ -154,14 +161,14 @@ function createBubble(event) {
   inputItem.value = "";
 }
 
-function addRadio(location, styleType, id) {
+function addRadio(location, styleType, id, name) {
   let divRadios = document.createElement("div");
   let divRadio1 = document.createElement("div");
   let divRadio2 = document.createElement("div");
 
   let radio1 = document.createElement("input");
   radio1.setAttribute("type", "radio");
-  radio1.setAttribute("name", "kind" + id);
+  radio1.setAttribute("name", name + id);
   radio1.setAttribute("id", id + "radioD");
   let labelForRadio1 = document.createElement("label");
   labelForRadio1.setAttribute("for", id + "radio");
@@ -174,7 +181,7 @@ function addRadio(location, styleType, id) {
 
   let radio2 = document.createElement("input");
   radio2.setAttribute("type", "radio");
-  radio2.setAttribute("name", "kind" + id);
+  radio2.setAttribute("name", name + id);
   radio2.setAttribute("id", id + "radioT");
   let labelForRadio2 = document.createElement("label");
   labelForRadio2.setAttribute("for", id + "radioT");
@@ -234,6 +241,7 @@ function isEmpty(str) {
 }
 
 function removeBubble(event) {
+  audioDel.play();
   let idDiv = event.target.parentNode.getAttribute("id");
 
   if (idDiv === null) {
@@ -250,6 +258,7 @@ function removeBubble(event) {
 }
 
 function completeTask(event) {
+  audioFinish.play();
   let idDiv = event.target.parentNode.getAttribute("id");
 
   if (idDiv === null) {
@@ -302,11 +311,12 @@ function addToList(id, divList) {
   addDelBtn(divContainer, "delBtnList");
   addCheckBtn(divContainer, "checkInputList");
   divContainer.appendChild(txtNode);
-  addRadio(divContainer, "radiosInList", id);
+  addRadio(divContainer, "radiosInList", id, "kind1");
   divEleToAdd.appendChild(divContainer);
 }
 
 function bubbleToDo(event) {
+  audioRadio.play();
   let radioId = event.target.getAttribute("id");
   let objId = event.target.getAttribute("id").slice(0, radioId.length - 6);
   let bubble = findBubble(parseInt(objId));
@@ -318,6 +328,7 @@ function bubbleToDo(event) {
 }
 
 function bubbleToProcess(event) {
+  audioRadio.play();
   let radioId = event.target.getAttribute("id");
   let objId = event.target.getAttribute("id").slice(0, radioId.length - 6);
   let bubble = findBubble(parseInt(objId));
@@ -445,6 +456,7 @@ function arrowConnecting(event) {
 
 function removeArrow(event) {
   event.target.parentNode.remove();
+  audioDel.play();
 
   //need to remove connection from array
 }
@@ -499,20 +511,21 @@ function clickExportToDo() {
 }
 
 function getBubbles(typeWanted) {
-  let arr = [["Id", "Bubble", "Type", "Connected To", "Done?"]];
+  // let arr = [["Id", "Bubble", "Type", "Connected To", "Done?"]];
+  let arr = [["Id", "Bubble", "Type", "Done?"]];
   listWanted = typeWanted == 1 ? "toDosList" : "toProcessList";
   divsWanted = document.querySelector("#" + listWanted).childNodes;
   for (let divWanted of divsWanted) {
     let objIdWanted = divWanted.getAttribute("data-objid");
     let objWanted = findBubble(objIdWanted);
     let txt = objWanted.text;
-    let connectedTxt = connectedToTxt(objIdWanted);
+    // let connectedTxt = connectedToTxt(objIdWanted);
     if (txt) {
       arr.push([
         `${objIdWanted}`,
         txt,
         listWanted,
-        connectedTxt,
+        // connectedTxt,
         objWanted.done,
       ]);
     }
