@@ -1,12 +1,13 @@
 // class Bubble (id, text, done, hidden, type, priority)
 let Bubble = class {
-  constructor(id, text, done, hidden, type, priority) {
+  constructor(id, text, done, hidden, type, priority,connectedTo) {
     this.id = id;
     this.text = text;
     this.done = done;
     this.hidden = hidden;
     this.type = type; // 0 = Bubble | 1 -ToDo | 2 - ToProcess | 3 - Deleted
     this.priority = priority;
+    this.connectedTo = [];
   }
 };
 let bubblesList = [];
@@ -425,7 +426,7 @@ function arrowConnecting(event) {
     console.log(bubbleForConnect2);
     //need to add connection in memory
   }
-
+  findBubble(bubbleForConnect1).connectedTo.push(bubbleForConnect2);
   newArrowDraw = document.createElement("connection");
   newArrowDraw.setAttribute("from", bubbleForConnect1);
   newArrowDraw.setAttribute("to", bubbleForConnect2);
@@ -490,13 +491,23 @@ function clickExportToDo() {
 }
 
 function getBubbles(typeWanted) {
-  let arr=[["Item","Type"]];
+  let arr=[["Id","Bubble","Type","Connected To","Done?"]];
   listWanted = (typeWanted == 1)? "toDosList" : "toProcessList";
   divsWanted = document.querySelector("#" + listWanted).childNodes;
   for (let divWanted of divsWanted) {
     let objIdWanted = divWanted.getAttribute("data-objid");
-    let txt = findBubble(objIdWanted).text;
-    if (txt) {arr.push([findBubble(objIdWanted).text, listWanted])}
+    let objWanted = findBubble(objIdWanted);
+    let txt = objWanted.text;
+    let connectedTxt = connectedToTxt(objIdWanted)
+    if (txt) {arr.push([`${objIdWanted}`,txt, listWanted,connectedTxt,objWanted.done])}
   }
   return arr;
+}
+
+function connectedToTxt(num) {
+  let str="";
+  str = findBubble(num).connectedTo.map(objid=>{
+    return findBubble(objid).text
+  }).join(",");
+  return str
 }
