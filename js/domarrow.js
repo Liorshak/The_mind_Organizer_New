@@ -280,7 +280,7 @@
       var changedElem = e.target;
       var wasConnection = false;
       for (var i = 0; i < connectionElements.length; ++i) {
-        var fromE = document.querySelector(
+        var fromE = document.getElementById(
           connectionElements[i].getAttribute("from")
         );
         if (fromE === changedElem) {
@@ -288,7 +288,7 @@
           repaintWithoutObserve(connectionElements[i]);
           continue;
         }
-        var toE = document.querySelector(
+        var toE = document.getElementById(
           connectionElements[i].getAttribute("to")
         );
         if (toE === changedElem) {

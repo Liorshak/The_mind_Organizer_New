@@ -1,6 +1,6 @@
 // class Bubble (id, text, done, hidden, type, priority)
 let Bubble = class {
-  constructor(id, text, done, hidden, type, priority,connectedTo) {
+  constructor(id, text, done, hidden, type, priority, connectedTo) {
     this.id = id;
     this.text = text;
     this.done = done;
@@ -15,6 +15,7 @@ let bubblesList = [];
 let isDown = false;
 let offset = [0, 0];
 let draggedElement;
+let arrayArrows = [];
 
 // collect elements
 let brainForm = document.getElementById("brainForm");
@@ -33,7 +34,6 @@ const audio2 = new Audio("audio/connected.wav");
 
 let exportProcessBtn = document.getElementById("exportProcessBtn");
 let exportToDoBtn = document.getElementById("exportToDoBtn");
-
 
 //initial listeners
 brainForm.addEventListener("submit", createBubble);
@@ -433,6 +433,8 @@ function arrowConnecting(event) {
   newArrowDraw.setAttribute("color", "rgba(35,121,129,0.75)");
   newArrowDraw.setAttribute("tail", "1");
   newArrowDraw.classList.add("arrowShow");
+  newArrowDraw.addEventListener("dblclick", removeArrow);
+  newArrowDraw.setAttribute("id", arrayArrows.length + "arrow");
 
   console.log(newArrowDraw);
   dragArea.appendChild(newArrowDraw);
@@ -441,40 +443,46 @@ function arrowConnecting(event) {
   bubbleForConnect2 = null;
 }
 
+function removeArrow(event) {
+  event.target.parentNode.remove();
+
+  //need to remove connection from array
+}
+
 function exportToCsv(filename, rows) {
   let processRow = function (row) {
-    let finalVal = '';
+    let finalVal = "";
     for (let j = 0; j < row.length; j++) {
-      let innerValue = row[j] === null ? '' : row[j].toString();
+      let innerValue = row[j] === null ? "" : row[j].toString();
       if (row[j] instanceof Date) {
         innerValue = row[j].toLocaleString();
-      };
+      }
       let result = innerValue.replace(/"/g, '""');
-      if (result.search(/("|,|\n)/g) >= 0)
-        result = '"' + result + '"';
-      if (j > 0)
-        finalVal += ',';
+      if (result.search(/("|,|\n)/g) >= 0) result = '"' + result + '"';
+      if (j > 0) finalVal += ",";
       finalVal += result;
     }
-    return finalVal + '\n';
+    return finalVal + "\n";
   };
 
-  let csvFile = '';
+  let csvFile = "";
   for (let i = 0; i < rows.length; i++) {
     csvFile += processRow(rows[i]);
   }
 
-  let blob = new Blob([csvFile], { type: 'text/csv;charset=utf-8;' });
-  if (navigator.msSaveBlob) { // IE 10+
+  let blob = new Blob([csvFile], { type: "text/csv;charset=utf-8;" });
+  if (navigator.msSaveBlob) {
+    // IE 10+
     navigator.msSaveBlob(blob, filename);
   } else {
     let link = document.createElement("a");
-    if (link.download !== undefined) { // feature detection
+    if (link.download !== undefined) {
+      // feature detection
       // Browsers that support HTML5 download attribute
       let url = URL.createObjectURL(blob);
       link.setAttribute("href", url);
       link.setAttribute("download", filename);
-      link.style.visibility = 'hidden';
+      link.style.visibility = "hidden";
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -483,31 +491,41 @@ function exportToCsv(filename, rows) {
 }
 
 function clickExportProcess() {
-  exportToCsv("export.csv",getBubbles(2))
+  exportToCsv("export.csv", getBubbles(2));
 }
 
 function clickExportToDo() {
-  exportToCsv("export.csv", getBubbles(1))
+  exportToCsv("export.csv", getBubbles(1));
 }
 
 function getBubbles(typeWanted) {
-  let arr=[["Id","Bubble","Type","Connected To","Done?"]];
-  listWanted = (typeWanted == 1)? "toDosList" : "toProcessList";
+  let arr = [["Id", "Bubble", "Type", "Connected To", "Done?"]];
+  listWanted = typeWanted == 1 ? "toDosList" : "toProcessList";
   divsWanted = document.querySelector("#" + listWanted).childNodes;
   for (let divWanted of divsWanted) {
     let objIdWanted = divWanted.getAttribute("data-objid");
     let objWanted = findBubble(objIdWanted);
     let txt = objWanted.text;
-    let connectedTxt = connectedToTxt(objIdWanted)
-    if (txt) {arr.push([`${objIdWanted}`,txt, listWanted,connectedTxt,objWanted.done])}
+    let connectedTxt = connectedToTxt(objIdWanted);
+    if (txt) {
+      arr.push([
+        `${objIdWanted}`,
+        txt,
+        listWanted,
+        connectedTxt,
+        objWanted.done,
+      ]);
+    }
   }
   return arr;
 }
 
 function connectedToTxt(num) {
-  let str="";
-  str = findBubble(num).connectedTo.map(objid=>{
-    return findBubble(objid).text
-  }).join(",");
-  return str
+  let str = "";
+  str = findBubble(num)
+    .connectedTo.map((objid) => {
+      return findBubble(objid).text;
+    })
+    .join(",");
+  return str;
 }
