@@ -29,9 +29,16 @@ let bubbleForConnect2 = null;
 
 const audio1 = new Audio("audio/startconnecting.wav");
 const audio2 = new Audio("audio/connected.wav");
+
+let exportProcessBtn = document.getElementById("exportProcessBtn");
+let exportToDoBtn = document.getElementById("exportToDoBtn");
+
+
 //initial listeners
 brainForm.addEventListener("submit", createBubble);
 subjectForm.addEventListener("submit", maintainSubject);
+exportProcessBtn.addEventListener("click", clickExportProcess);
+exportToDoBtn.addEventListener("click", clickExportToDo);
 
 let subjectFlag = false;
 function maintainSubject(event) {
@@ -431,4 +438,65 @@ function arrowConnecting(event) {
 
   bubbleForConnect1 = null;
   bubbleForConnect2 = null;
+}
+
+function exportToCsv(filename, rows) {
+  let processRow = function (row) {
+    let finalVal = '';
+    for (let j = 0; j < row.length; j++) {
+      let innerValue = row[j] === null ? '' : row[j].toString();
+      if (row[j] instanceof Date) {
+        innerValue = row[j].toLocaleString();
+      };
+      let result = innerValue.replace(/"/g, '""');
+      if (result.search(/("|,|\n)/g) >= 0)
+        result = '"' + result + '"';
+      if (j > 0)
+        finalVal += ',';
+      finalVal += result;
+    }
+    return finalVal + '\n';
+  };
+
+  let csvFile = '';
+  for (let i = 0; i < rows.length; i++) {
+    csvFile += processRow(rows[i]);
+  }
+
+  let blob = new Blob([csvFile], { type: 'text/csv;charset=utf-8;' });
+  if (navigator.msSaveBlob) { // IE 10+
+    navigator.msSaveBlob(blob, filename);
+  } else {
+    let link = document.createElement("a");
+    if (link.download !== undefined) { // feature detection
+      // Browsers that support HTML5 download attribute
+      let url = URL.createObjectURL(blob);
+      link.setAttribute("href", url);
+      link.setAttribute("download", filename);
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  }
+}
+
+function clickExportProcess() {
+  exportToCsv("export.csv",getBubbles(2))
+}
+
+function clickExportToDo() {
+  exportToCsv("export.csv", getBubbles(1))
+}
+
+function getBubbles(typeWanted) {
+  let arr=[["Item","Type"]];
+  listWanted = (typeWanted == 1)? "toDosList" : "toProcessList";
+  divsWanted = document.querySelector("#" + listWanted).childNodes;
+  for (let divWanted of divsWanted) {
+    let objIdWanted = divWanted.getAttribute("data-objid");
+    let txt = findBubble(objIdWanted).text;
+    if (txt) {arr.push([findBubble(objIdWanted).text, listWanted])}
+  }
+  return arr;
 }
