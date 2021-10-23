@@ -13,6 +13,7 @@ let bubblesList = [];
 // will control the gragging . Must be global.
 let isDown = false;
 let offset = [0, 0];
+let draggedElement 
 
 // collect elements
 let brainForm = document.getElementById("brainForm");
@@ -258,6 +259,13 @@ function addToList(id, divList) {
   let obj = findBubble(id);
   let divEleToAdd = document.getElementById(divList);
   let divContainer = document.createElement("div");
+  divContainer.addEventListener('dragstart',dragStart);
+  divContainer.addEventListener('dragenter', dragEnter);
+  divContainer.addEventListener('dragover', dragOver);
+  divContainer.addEventListener('dragleave', dragLeave);
+  divContainer.addEventListener('dragend',dragEnd);
+  divContainer.addEventListener('drop', dragDrop);
+  divContainer.setAttribute("draggable", "true");
   divContainer.setAttribute("data-objid", id);
   let txtNode = document.createTextNode(obj.text);
   addDelBtn(divContainer, "delBtnList");
@@ -330,4 +338,39 @@ function bubbleMouseMove(event) {
     ele.style.left = mousePosition.x + offset[0] + "px";
     ele.style.top = mousePosition.y + offset[1] + "px";
   }
+}
+
+function dragStart(event){
+console.log("dragStart");
+draggedElement = event.target;
+event.target.classList.add("dragstart");
+}
+
+function dragEnter(event){
+console.log("dragEnter");
+event.target.classList.add("dragenter");
+}
+
+function dragLeave(event) {
+console.log("dragLeave");
+event.target.classList.remove("dragenter");
+}
+
+function dragOver(event) {
+  event.preventDefault();
+  console.log("dragOver");
+}
+
+function dragDrop(event) {
+
+let dropZoneName = ((findBubble(event.target.getAttribute("data-objid")).type) == 1)? "toDosList" : "toProcessList";
+let dropZone = document.getElementById(dropZoneName);
+draggedElement.classList.remove("dragstart");
+event.target.classList.remove("dragenter");
+dropZone.insertBefore(draggedElement,event.target);
+}
+
+function dragEnd(event) {
+  event.target.classList.remove("dragstart");
+
 }

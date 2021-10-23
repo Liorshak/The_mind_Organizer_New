@@ -256,7 +256,7 @@ h2{
 
 
 #toProcessList>div ,#toDosList>div {
-    background: white;
+    background-color: white;
     border-radius: 10px;
     margin:8px 20px ;
     padding:5px;
@@ -325,6 +325,14 @@ h2{
     margin-left:auto;
     font-size:0.7em;
     flex-direction: column;
+}
+
+.dragstart {
+    background-color: lightgreen !important;
+}
+
+.dragenter {
+    background-color: lightpink !important;
 }
 
 
@@ -421,3 +429,6 @@ margin-left: 5px;
         
     }
 }
+
+
+
