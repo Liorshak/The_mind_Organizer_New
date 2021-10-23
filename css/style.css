@@ -28,6 +28,7 @@ color:white;
     width: 99.9%;
     height: 200vh;
     padding:5vh;
+    
     /* justify-content: space-around; */
 }
 
@@ -326,6 +327,22 @@ h2{
     font-size:0.7em;
     flex-direction: column;
 }
+
+.arrowBtn{
+position:absolute;
+right:-3px;
+border-radius: 5px;
+border: 0px;
+background:rgb(212, 184, 55);
+color:white;
+font-size:0.5em;
+font-weight:bold;
+}
+/* 
+.arrowShow{
+    color: rgba(35,121,129,0.5) !important;
+   
+} */
 
 .dragstart {
     background-color: rgba(35,121,129,0.5) !important;

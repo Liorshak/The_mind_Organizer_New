@@ -13,7 +13,7 @@ let bubblesList = [];
 // will control the gragging . Must be global.
 let isDown = false;
 let offset = [0, 0];
-let draggedElement 
+let draggedElement;
 
 // collect elements
 let brainForm = document.getElementById("brainForm");
@@ -24,8 +24,15 @@ let dragArea = document.getElementById("dragArea");
 let toDos = document.getElementById("toDos");
 let toProcess = document.getElementById("toProcess");
 
+let bubbleForConnect1 = null;
+let bubbleForConnect2 = null;
+
+const audio1 = new Audio("audio/startconnecting.wav");
+const audio2 = new Audio("audio/connected.wav");
+
 let exportProcessBtn = document.getElementById("exportProcessBtn");
 let exportToDoBtn = document.getElementById("exportToDoBtn");
+
 
 //initial listeners
 brainForm.addEventListener("submit", createBubble);
@@ -86,6 +93,12 @@ function createBubble(event) {
 
   bubblesList.push(newObj);
 
+  newArrowBtn = document.createElement("button");
+  newArrowTxt = document.createTextNode(">");
+  newArrowBtn.appendChild(newArrowTxt);
+  newArrowBtn.classList.add("arrowBtn");
+  newArrowBtn.addEventListener("click", arrowConnecting);
+
   //need to make an input to get item priority
 
   // ************** Radio Button
@@ -114,13 +127,20 @@ function createBubble(event) {
 
   newBubble.appendChild(newTxt);
 
+  newBubble.appendChild(newArrowBtn);
   addRadio(newBubble, "radios", newObj.id);
   /// newBubble.appendChild (priority)
   //newBubble.appendChild (radio)
 
   newBubble.addEventListener("mousedown", bubbleMouseDown);
+  // newBubble.addEventListener("touchstart", bubbleMouseDown);
+
   document.addEventListener("mouseup", bubbleMouseUp);
+  // document.addEventListener("touchend", bubbleMouseUp);
+  // document.addEventListener("touchcancel", bubbleMouseUp);
+
   newBubble.addEventListener("mousemove", bubbleMouseMove);
+  // newBubble.addEventListener("touchmove", bubbleMouseMove);
 
   newBubble.classList.add("thought");
 
@@ -264,12 +284,17 @@ function addToList(id, divList) {
   let obj = findBubble(id);
   let divEleToAdd = document.getElementById(divList);
   let divContainer = document.createElement("div");
-  divContainer.addEventListener('dragstart',dragStart);
-  divContainer.addEventListener('dragenter', dragEnter);
-  divContainer.addEventListener('dragover', dragOver);
-  divContainer.addEventListener('dragleave', dragLeave);
-  divContainer.addEventListener('dragend',dragEnd);
-  divContainer.addEventListener('drop', dragDrop);
+  divContainer.addEventListener("dragstart", dragStart);
+  // divContainer.addEventListener("touchstart", dragStart,);
+
+  divContainer.addEventListener("dragenter", dragEnter);
+  divContainer.addEventListener("dragover", dragOver);
+  divContainer.addEventListener("dragleave", dragLeave);
+  divContainer.addEventListener("dragend", dragEnd);
+  // divContainer.addEventListener("touchend", dragEnd);
+  // divContainer.addEventListener("touchcancel", dragEnd);
+
+  divContainer.addEventListener("drop", dragDrop);
   divContainer.setAttribute("draggable", "true");
   divContainer.setAttribute("data-objid", id);
   let txtNode = document.createTextNode(obj.text);
@@ -345,20 +370,20 @@ function bubbleMouseMove(event) {
   }
 }
 
-function dragStart(event){
-console.log("dragStart");
-draggedElement = event.target;
-event.target.classList.add("dragstart");
+function dragStart(event) {
+  console.log("dragStart");
+  draggedElement = event.target;
+  event.target.classList.add("dragstart");
 }
 
-function dragEnter(event){
-console.log("dragEnter");
-event.target.classList.add("dragenter");
+function dragEnter(event) {
+  console.log("dragEnter");
+  event.target.classList.add("dragenter");
 }
 
 function dragLeave(event) {
-console.log("dragLeave");
-event.target.classList.remove("dragenter");
+  console.log("dragLeave");
+  event.target.classList.remove("dragenter");
 }
 
 function dragOver(event) {
@@ -367,17 +392,52 @@ function dragOver(event) {
 }
 
 function dragDrop(event) {
-
-let dropZoneName = ((findBubble(event.target.getAttribute("data-objid")).type) == 1)? "toDosList" : "toProcessList";
-let dropZone = document.getElementById(dropZoneName);
-draggedElement.classList.remove("dragstart");
-event.target.classList.remove("dragenter");
-dropZone.insertBefore(draggedElement,event.target);
+  let dropZoneName =
+    findBubble(event.target.getAttribute("data-objid")).type == 1
+      ? "toDosList"
+      : "toProcessList";
+  let dropZone = document.getElementById(dropZoneName);
+  draggedElement.classList.remove("dragstart");
+  event.target.classList.remove("dragenter");
+  dropZone.insertBefore(draggedElement, event.target);
 }
 
 function dragEnd(event) {
   event.target.classList.remove("dragstart");
+}
 
+function arrowConnecting(event) {
+  //identify if its first location or second
+  if (bubbleForConnect1 === null) {
+    bubbleForConnect1 = event.target.parentNode.id;
+    console.log(bubbleForConnect1);
+    audio1.play();
+    return;
+  } else if (bubbleForConnect1 === event.target.parentNode.id) {
+    console.log(bubbleForConnect1);
+    audio1.play();
+    return;
+
+    //need to add connection in memory
+  } else {
+    bubbleForConnect2 = event.target.parentNode.id;
+    audio2.play();
+    console.log(bubbleForConnect2);
+    //need to add connection in memory
+  }
+
+  newArrowDraw = document.createElement("connection");
+  newArrowDraw.setAttribute("from", bubbleForConnect1);
+  newArrowDraw.setAttribute("to", bubbleForConnect2);
+  newArrowDraw.setAttribute("color", "rgba(35,121,129,0.75)");
+  newArrowDraw.setAttribute("tail", "1");
+  newArrowDraw.classList.add("arrowShow");
+
+  console.log(newArrowDraw);
+  dragArea.appendChild(newArrowDraw);
+
+  bubbleForConnect1 = null;
+  bubbleForConnect2 = null;
 }
 
 function exportToCsv(filename, rows) {
