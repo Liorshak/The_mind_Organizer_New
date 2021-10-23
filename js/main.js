@@ -16,14 +16,36 @@ let offset = [0, 0];
 
 // collect elements
 let brainForm = document.getElementById("brainForm");
+let subjectForm = document.getElementById("subjectForm");
 let inputItem = document.getElementById("inputItem");
+let inputSubject = document.getElementById("inputSubject");
 let dragArea = document.getElementById("dragArea");
 let toDos = document.getElementById("toDos");
 let toProcess = document.getElementById("toProcess");
 
 //initial listeners
 brainForm.addEventListener("submit", createBubble);
+subjectForm.addEventListener("submit", maintainSubject);
 
+let subjectFlag = false;
+function maintainSubject(event) {
+  event.preventDefault();
+  if (!subjectFlag) {
+    createSubject();
+  } else {
+    let mainSubject = document.getElementById("mainSubject");
+    mainSubject.textContent = inputSubject.value;
+  }
+}
+
+function createSubject() {
+  let newSubject = document.createElement("div");
+  let newSubTxt = document.createTextNode(inputSubject.value);
+  newSubject.appendChild(newSubTxt);
+  newSubject.setAttribute("id", "mainSubject");
+  dragArea.insertBefore(newSubject, dragArea.firstChild);
+  subjectFlag = true;
+}
 // let ... document.get..
 // part 2
 

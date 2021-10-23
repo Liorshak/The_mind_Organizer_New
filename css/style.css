@@ -98,7 +98,7 @@ h2{
     flex-direction:column;
     justify-content: center;
     align-items: center;
-}
+    }
 
 #dragArea {
     margin-top: 20px;
@@ -107,9 +107,11 @@ h2{
     width: 100%;
     height: 78vh;
     text-align:center;
-    /* display:flex;
-    flex-direction:column-reverse; */
-    
+    display:flex;
+    flex-direction:column;
+    align-items: center;
+    justify-content:space-between;
+        
 }
 
 #arrowPageDown {
@@ -153,23 +155,37 @@ h2{
 }
 
 
-.mainSubject{
+#mainSubject{
     
-    color:rgb(35,121,129);
+    color:white;
     font-weight:bold;
     font-size:1.3em;
-    display:flex;
+    display:inline-block;
     background-color:#fff;
-    padding:20px;
-    border-radius:30px;
-    min-width:70px;
-    max-width:220px;
-    min-height:60px;
-    margin:20px;
+ 
+
     position:relative;
-    align-items:center;
-    justify-content:center;
+    /* align-items:center;
+    justify-content:center; */
     text-align:center;
+    line-height:150px;
+    z-index:-10;
+    margin-top: 28vh;
+    opacity: 0.8;
+/* ----- */
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    box-shadow:
+      inset 0 0 50px #fff,
+      inset 20px 0 80px #FC459B,
+      inset -20px 0 80px #47E9F8,
+      inset 20px 0 300px #FC459B,
+      inset -20px 0 300px #47E9F8,
+      0 0 50px #fff,
+      -10px 0 80px #FC459B,
+      10px 0 80px #47E9F8;
+    text-transform:uppercase;
 }
 
 
@@ -241,13 +257,13 @@ h2{
 
 #toProcessList>div ,#toDosList>div {
     background: white;
-    border-radius: 5px;
+    border-radius: 10px;
+    margin:8px 20px ;
     padding:5px;
     color:rgb(35,121,129);
     font-size:1.3em;
     font-weight: bold;
-    margin-left: 10px;
-    margin-right:10px;
+ 
     display:flex;
     align-items:center;
 }
@@ -256,6 +272,8 @@ h2{
   .finished ,#toProcessList>div.finished ,#toDosList>div.finished{
     text-decoration:line-through;
     color:rgba(177,46,108,1);
+    opacity:0.8;
+    
 }
 
 
@@ -278,6 +296,7 @@ h2{
 
 #footer a:hover{
     color:rgb(35,121,129);
+    font-weight:bold;
 }
 
 #footer div{
@@ -359,6 +378,11 @@ margin-left: 5px;
         height:250vh;
        
     }
+
+
+.thought, #toProcessList>div ,#toDosList>div{
+    font-size:0.8em;
+}
 
 #TaskOrganizer{
         flex-direction: column;
