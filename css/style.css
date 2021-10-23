@@ -40,6 +40,7 @@ color:white;
 }
 h2{
     font-weight: bold;
+    /* margin-bottom:30px; */
 }
 
 #subjectForm input,#brainForm input{
@@ -58,6 +59,11 @@ h2{
     
 }
 
+#subjectForm{
+    margin-bottom:120px;
+}
+   
+
 
 
 
@@ -72,21 +78,22 @@ h2{
 }
 
 #headTitle{
-    margin: 3vh;
-    margin-bottom:47vh;
+    margin-top: 60px;
+    margin-bottom: auto;
+    
     font-size:2em;
     font-weight:bold;
 
 }
 .paraImage {
-    /* The image used */
+   
     
     background-image: url("https://images.unsplash.com/photo-1617791160536-598cf32026fb?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1528&q=80");
   
-    /* Set a specific height */
-    min-height: 800px;
+   
+    min-height: 600px;
   
-    /* Create the parallax scrolling effect */
+    width:99.9vw;
     background-attachment: fixed;
     background-position: center;
     background-repeat: no-repeat;
@@ -97,8 +104,9 @@ h2{
 #subjectHead{
     display:flex;
     flex-direction:column;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
+    margin-top:60px;
     }
 
 #dragArea {
@@ -394,7 +402,8 @@ margin-left: 5px;
 #toDosList , #toProcessList{
     width:40vw;
     height:80vh;
-    
+ 
+   
     
     margin-top: 20px;
     
@@ -414,6 +423,21 @@ margin-left: 5px;
     font-size: 2em;
     border-bottom:3px solid rgba(255, 255, 255, 0.397);
 }
+
+
+
+#exportProcessBtn, #exportToDoBtn{
+    display: block;
+    margin: 10px auto;
+    margin-bottom: 50px;
+    border-radius: 5px;
+    border:0px;
+    background:rgb(35,121,129);
+    color:white;
+    font-weight: bold;
+}
+
+
 
 @media all and (max-width: 800px) {
 
@@ -438,6 +462,7 @@ margin-left: 5px;
 #toDosList , #toProcessList{
     border:none;
     height: 50vh;
+   
    
 }
 
