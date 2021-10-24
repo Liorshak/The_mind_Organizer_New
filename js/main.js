@@ -178,6 +178,7 @@ function addRadio(location, styleType, id, name) {
   divRadios.classList.add(styleType);
 
   location.appendChild(divRadios);
+  return [radio1, radio2];
 }
 
 function addDelBtn(location, styleType) {
@@ -291,7 +292,10 @@ function addToList(id, divList) {
   addDelBtn(divContainer, "delBtnList");
   addCheckBtn(divContainer, "checkInputList");
   divContainer.appendChild(txtNode);
-  addRadio(divContainer, "radiosInList", id, "kind1");
+  let radios = addRadio(divContainer, "radiosInList", id, "kind1");
+  if (divList=="toDosList") {
+    radios[0].checked = true;
+  } else {radios[1].checked = true}
   divEleToAdd.appendChild(divContainer);
 }
 
