@@ -11,7 +11,7 @@ let Bubble = class {
   }
 };
 let bubblesList = [];
-// will control the gragging . Must be global.
+// will control the dragging . Must be global.
 let isDown = false;
 let offset = [0, 0];
 let draggedElement;
@@ -66,7 +66,7 @@ function createSubject() {
   dragArea.insertBefore(newSubject, dragArea.firstChild);
   subjectFlag = true;
 }
-// let ... document.get..
+
 // part 2
 
 // createBubble
@@ -81,7 +81,6 @@ function createBubble(event) {
 
   let newBubble = document.createElement("div");
   let newTxt = document.createTextNode(inputItem.value);
-  // newTxt.classList.add("txtInBubble");
   newBubble.appendChild(newTxt);
   newBubble.setAttribute("id", bubblesList.length);
   //*********************** IMPROVING DRAGGING */
@@ -107,14 +106,6 @@ function createBubble(event) {
   newArrowBtn.classList.add("arrowBtn");
   newArrowBtn.addEventListener("click", arrowConnecting);
 
-  //need to make an input to get item priority
-
-  // ************** Radio Button
-  // <input type="radio" id="html" name="fav_language" value="HTML">
-  //   <label for="html">HTML</label><br>
-
-  //create radio button
-
   // make draggable true attribute
   // newBubble.setAttribute("draggable", "true");
   // newBubble.style.position = "absolute";
@@ -126,10 +117,6 @@ function createBubble(event) {
   // newBubble.style.top = randomY + "px";
   // newBubble.style.left = randomX + "px";
 
-  /// here event listener radio btn
-
-  /// here event listener item priority
-
   addDelBtn(newBubble, "delBtn");
   addCheckBtn(newBubble, "checkInput");
 
@@ -137,8 +124,6 @@ function createBubble(event) {
 
   newBubble.appendChild(newArrowBtn);
   addRadio(newBubble, "radios", newObj.id, "kind");
-  /// newBubble.appendChild (priority)
-  //newBubble.appendChild (radio)
 
   newBubble.addEventListener("mousedown", bubbleMouseDown);
   // newBubble.addEventListener("touchstart", bubbleMouseDown);
@@ -153,10 +138,6 @@ function createBubble(event) {
   newBubble.classList.add("thought");
 
   dragArea.appendChild(newBubble);
-
-  //recreate the element  for the to do list
-
-  // to do list append child new bubble
 
   inputItem.value = "";
 }
@@ -220,8 +201,7 @@ function addCheckBtn(location, styleType) {
 }
 
 function startDrag(event) {
-  //event.preventDefault();
-  //event.target.style.backgroundColor = "lightpink";
+  event.preventDefault();
 }
 
 function endDrag(event) {
@@ -383,24 +363,20 @@ function bubbleMouseMove(event) {
 }
 
 function dragStart(event) {
-  console.log("dragStart");
   draggedElement = event.target;
   event.target.classList.add("dragstart");
 }
 
 function dragEnter(event) {
-  console.log("dragEnter");
   event.target.classList.add("dragenter");
 }
 
 function dragLeave(event) {
-  console.log("dragLeave");
   event.target.classList.remove("dragenter");
 }
 
 function dragOver(event) {
   event.preventDefault();
-  console.log("dragOver");
 }
 
 function dragDrop(event) {
@@ -422,11 +398,9 @@ function arrowConnecting(event) {
   //identify if its first location or second
   if (bubbleForConnect1 === null) {
     bubbleForConnect1 = event.target.parentNode.id;
-    console.log(bubbleForConnect1);
     audio1.play();
     return;
   } else if (bubbleForConnect1 === event.target.parentNode.id) {
-    console.log(bubbleForConnect1);
     audio1.play();
     return;
 
@@ -434,7 +408,7 @@ function arrowConnecting(event) {
   } else {
     bubbleForConnect2 = event.target.parentNode.id;
     audio2.play();
-    console.log(bubbleForConnect2);
+
     //need to add connection in memory
   }
   findBubble(bubbleForConnect1).connectedTo.push(bubbleForConnect2);
@@ -447,7 +421,6 @@ function arrowConnecting(event) {
   newArrowDraw.addEventListener("dblclick", removeArrow);
   newArrowDraw.setAttribute("id", arrayArrows.length + "arrow");
 
-  console.log(newArrowDraw);
   dragArea.appendChild(newArrowDraw);
 
   bubbleForConnect1 = null;
@@ -484,13 +457,11 @@ function exportToCsv(filename, rows) {
 
   let blob = new Blob([csvFile], { type: "text/csv;charset=utf-8;" });
   if (navigator.msSaveBlob) {
-    // IE 10+
     navigator.msSaveBlob(blob, filename);
   } else {
     let link = document.createElement("a");
     if (link.download !== undefined) {
       // feature detection
-      // Browsers that support HTML5 download attribute
       let url = URL.createObjectURL(blob);
       link.setAttribute("href", url);
       link.setAttribute("download", filename);
