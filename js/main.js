@@ -178,6 +178,7 @@ function addRadio(location, styleType, id, name) {
   divRadios.classList.add(styleType);
 
   location.appendChild(divRadios);
+  return [radio1, radio2];
 }
 
 function addDelBtn(location, styleType) {
@@ -291,7 +292,10 @@ function addToList(id, divList) {
   addDelBtn(divContainer, "delBtnList");
   addCheckBtn(divContainer, "checkInputList");
   divContainer.appendChild(txtNode);
-  addRadio(divContainer, "radiosInList", id, "kind1");
+  let radios = addRadio(divContainer, "radiosInList", id, "kind1");
+  if (divList=="toDosList") {
+    radios[0].checked = true;
+  } else {radios[1].checked = true}
   divEleToAdd.appendChild(divContainer);
 }
 
@@ -482,34 +486,23 @@ function clickExportToDo() {
 }
 
 function getBubbles(typeWanted) {
-  // let arr = [["Id", "Bubble", "Type", "Connected To", "Done?"]];
-  let arr = [["Id", "Bubble", "Type", "Done?"]];
-  listWanted = typeWanted == 1 ? "toDosList" : "toProcessList";
+  let arr = [["Id", "Bubble", "Type", "Connected To", "Done?"]];
+  listWanted = (typeWanted == 1) ? "toDosList" : "toProcessList";
   divsWanted = document.querySelector("#" + listWanted).childNodes;
   for (let divWanted of divsWanted) {
     let objIdWanted = divWanted.getAttribute("data-objid");
     let objWanted = findBubble(objIdWanted);
     let txt = objWanted.text;
-    // let connectedTxt = connectedToTxt(objIdWanted);
-    if (txt) {
-      arr.push([
-        `${objIdWanted}`,
-        txt,
-        listWanted,
-        // connectedTxt,
-        objWanted.done,
-      ]);
-    }
+    let connectedTxt = connectedToTxt(objIdWanted)
+    if (txt) { arr.push([`${objIdWanted}`, txt, listWanted, connectedTxt, objWanted.done]) }
   }
   return arr;
 }
 
 function connectedToTxt(num) {
   let str = "";
-  str = findBubble(num)
-    .connectedTo.map((objid) => {
-      return findBubble(objid).text;
-    })
-    .join(",");
-  return str;
+  str = findBubble(num).connectedTo.map(objid => {
+    return findBubble(objid).text
+  }).join(",");
+  return str
 }
